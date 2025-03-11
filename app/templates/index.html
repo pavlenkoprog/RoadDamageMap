@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map with Photos</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+    <!-- Leaflet.markercluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <style>
+        /* Карта занимает всю высоту экрана */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container-fluid {
+            height: 100vh; /* Вся высота окна */
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        /* Боковое меню */
+        #sidebar {
+            height: 100vh;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 15px;
+            border-right: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row h-100">
+            <!-- Боковое меню (2 колонки Bootstrap) -->
+            <div class="col-2" id="sidebar">
+                <h3>Меню</h3>
+                <form action="/add-photo" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="lat" value="44.952581">
+                    <input type="hidden" name="lon" value="34.101198">
+                    <input type="file" name="file" class="form-control mb-2" required>
+                    <button type="submit" class="btn btn-primary w-100">Добавить фото</button>
+                </form>
+                <button id="delete-photo" class="btn btn-danger mt-3 w-100">Удалить фото</button>
+            </div>
+
+            <!-- Карта (10 колонок Bootstrap) -->
+            <div class="col-10 p-0">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Leaflet.markercluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="/static/js/map.js"></script>
+
+</body>
+</html>

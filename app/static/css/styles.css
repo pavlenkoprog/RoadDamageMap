@@ -1,0 +1,47 @@
+.custom-cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cluster-small {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    color: black;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 150, 255, 0.7);
+}
+
+.cluster-medium {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    background-color: rgba(255, 140, 0, 0.7); /* Оранжевый */
+    border-radius: 50%
+    width: 40px;
+    height: 40px;
+}
+
+.cluster-large {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    background-color: rgba(255, 0, 0, 0.7); /* Красный */
+    border-radius: 50%
+    width: 50px;
+    height: 50px;
+}
