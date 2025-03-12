@@ -1,14 +1,13 @@
+var map;
+
 document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map('map', { attributionControl: false }).setView([44.952581, 34.101198], 13);
+    map = L.map('map', { attributionControl: false }).setView([44.952581, 34.101198], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Выводим переданные данные в консоль
-    console.log(photoData);
-
-    var customIcon = L.icon({
+        var customIcon = L.icon({
         iconUrl: '/static/custom-marker.png', // путь к изображению маркера
         iconSize: [32, 32],  // размер иконки
         iconAnchor: [16, 32], // точка привязки к координатам
@@ -29,11 +28,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    var photos = [
-        { lat: 44.952581, lon: 34.101198, src: "/static/img/photo1.png" },
-        { lat: 44.953500, lon: 34.100800, src: "/static/img/photo2.png" },
-        { lat: 44.951300, lon: 34.102500, src: "/static/img/photo3.png" }
-    ];
+    // Выводим переданные данные в консоль
+    console.log(photoData);
+    // Преобразуем в нужный формат
+    // Преобразуем список строк JSON в объекты и затем формируем нужный формат
+     const photos = photoData.map(photo => {
+        console.log(photo.photo)
+        return {
+            lat: photo.lat,
+            lon: photo.lon,
+            src: photo.photo
+        };
+    });
+    console.log(photos);
+
+
+//    var photos = [
+//        { lat: 44.952581, lon: 34.101198, src: "/static/img/photo1.png" },
+//        { lat: 44.953500, lon: 34.100800, src: "/static/img/photo2.png" },
+//        { lat: 44.951300, lon: 34.102500, src: "/static/img/photo3.png" }
+//    ];
 
     // Добавляем маркеры с попапами
     var customIcon = L.icon({
