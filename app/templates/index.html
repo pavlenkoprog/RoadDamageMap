@@ -70,6 +70,11 @@
     <!-- Leaflet.markercluster JS -->
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <script>
+        // Передаем данные из Python в JavaScript
+        var photoData = {{ photo_data | tojson }};
+    </script>
     <script src="/static/js/map.js"></script>
 
 </body>

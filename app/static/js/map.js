@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Выводим переданные данные в консоль
+    console.log(photoData);
+
     var customIcon = L.icon({
         iconUrl: '/static/custom-marker.png', // путь к изображению маркера
         iconSize: [32, 32],  // размер иконки
@@ -24,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+
 
     var photos = [
         { lat: 44.952581, lon: 34.101198, src: "/static/img/photo1.png" },
