@@ -57,16 +57,40 @@ document.addEventListener("DOMContentLoaded", function () {
         popupAnchor: [0, -32] // Точка появления всплывающего окна
     });
 
-    photos.forEach(photo => {
-        var popupContent = `<img src="${photo.src}" width="200" /><br>
-                            <button onclick="deletePhoto('${photo.src}')">Удалить</button>`;
+    function loadMarkers() {
+        markers.clearLayers();
+        photos.forEach(photo => {
+            var popupContent = `<img src="${photo.src}" width="200" /><br>
+                                <button onclick="deletePhoto('${photo.src}')">Удалить</button>`;
 
-        var marker = L.marker([photo.lat, photo.lon], { icon: customIcon });
-        marker.bindPopup(popupContent);
-        markers.addLayer(marker);
-    });
+            var marker = L.marker([photo.lat, photo.lon], { icon: customIcon });
+            marker.bindPopup(popupContent);
+            markers.addLayer(marker);
+        });
 
-    map.addLayer(markers);
+        map.addLayer(markers);
+    }
+    loadMarkers();
+
+    function loadPhotos() {
+        fetch("/photos")
+            .then(response => response.json())
+            .then(data => {
+                markers.clearLayers(); // Очищаем маркеры перед загрузкой новых
+
+                data.photos.forEach(photo => {
+                    var popupContent = `<img src="${photo.photo}" width="200" /><br>
+                                        <button onclick="deletePhoto('${photo.photo}')">Удалить</button>`;
+
+                    var marker = L.marker([photo.lat, photo.lon]);
+                    marker.bindPopup(popupContent);
+                    markers.addLayer(marker);
+                });
+
+                map.addLayer(markers);
+            })
+            .catch(error => console.error("Ошибка загрузки фото:", error));
+    }
 
     // Добавляем тепловую карту (Heatmap)
     var heatData = photos.map(photo => [photo.lat, photo.lon, 0.5]); // 1.0 - интенсивность точки
@@ -84,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }).addTo(map);
 
     window.deletePhoto = function (photoSrc) {
-        alert("Удаление фото: " + photoSrc);
+        deletePhoto(photoSrc)
+//        alert("Удаление фото: " + photoSrc);
     };
 });

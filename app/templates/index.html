@@ -67,7 +67,7 @@
 
                 <div id="form-container" class="position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
                     <h3 class="text-center">Добавить точку</h3>
-                    <form action="/add-point" method="POST" enctype="multipart/form-data">
+                    <form action="/add-point" method="POST" enctype="multipart/form-data" id="add-point-form">
                         <div class="mb-3">
                             <label for="lat" class="form-label">Широта:</label>
                             <input type="text" id="lat" name="lat" class="form-control" readonly>
@@ -110,6 +110,7 @@
     </script>
     <script src="/static/js/map.js"></script>
     <script src="/static/js/add_point.js"></script>
+    <script src="/static/js/delete_point.js"></script>
 
 </body>
 </html>
