@@ -1,4 +1,5 @@
 function deletePhoto(photoSrc) {
+    console.log("function deletePhoto(photoSrc) {")
     if (!confirm("Вы уверены, что хотите удалить фото?")) return;
 
     fetch("/delete-photo", {

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // Выводим переданные данные в консоль
-    console.log(photoData);
+    console.log('photoData полученный при загрузке страницы',photoData);
     // Преобразуем в нужный формат
     // Преобразуем список строк JSON в объекты и затем формируем нужный формат
      const photos = photoData.map(photo => {
@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
     console.log(photos);
+    console.log('console.log(photos);',photoData);
 
 
 //    var photos = [
@@ -58,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function loadMarkers() {
+        console.log('loadMarkers()');
         markers.clearLayers();
         photos.forEach(photo => {
             var popupContent = `<img src="${photo.src}" width="200" /><br>
@@ -107,8 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }).addTo(map);
 
-    window.deletePhoto = function (photoSrc) {
-        deletePhoto(photoSrc)
-//        alert("Удаление фото: " + photoSrc);
-    };
+//    window.deletePhoto = function (photoSrc) {
+//        deletePhoto(photoSrc)
+////        alert("Удаление фото: " + photoSrc);
+//    };
 });
