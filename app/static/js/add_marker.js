@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const formContainer = document.getElementById("add-form-container");
-    const form = document.getElementById("add-point-form"); // Получаем форму
+    const form = document.getElementById("add-marker-form"); // Получаем форму
     let formOpen = false; // Флаг состояния формы
 
     function openForm(lat, lon) {
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let formData = new FormData(form);
 
-        fetch('/add-point', {
+        fetch('/add-marker', {
             method: 'POST',
             body: formData
         })

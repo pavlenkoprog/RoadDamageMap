@@ -69,7 +69,7 @@
                     <h3 class="text-center">Добавить точку</h3>
 
 <!--                    Форма добавления маркера-->
-                    <form action="/add-point" method="POST" enctype="multipart/form-data" id="add-point-form">
+                    <form action="/add-point" method="POST" enctype="multipart/form-data" id="add-marker-form">
                         <div class="mb-3">
                             <label for="lat" class="form-label">Широта:</label>
                             <input type="text" id="lat" name="lat" class="form-control" readonly>
@@ -96,8 +96,8 @@
                 <div id="edit-form-container" class="map-form-container position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
                     <h3 class="text-center">Добавить точку</h3>
                 <!--                    Форма редактирования маркера-->
-                    <form action="/edit-point" method="POST" enctype="multipart/form-data" id="edit-point-form">
-                        <input type="hidden" id="edit-id" name="photo_id" readonly> <!-- ID маркера -->
+                    <form action="/edit-point" method="POST" enctype="multipart/form-data" id="edit-marker-form">
+                        <input type="hidden" id="edit-id" name="marker_id" readonly> <!-- ID маркера -->
 
                         <div class="mb-3">
                             <label for="edit-lat" class="form-label">Широта:</label>
@@ -131,14 +131,10 @@
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 
-    <script>
-        // Передаем данные из Python в JavaScript
-        var photoData = {{ photo_data | tojson }};
-    </script>
     <script src="/static/js/map.js"></script>
-    <script src="/static/js/add_point.js"></script>
-    <script src="/static/js/edit_point.js"></script>
-    <script src="/static/js/delete_point.js"></script>
+    <script src="/static/js/add_marker.js"></script>
+    <script src="/static/js/edit_marker.js"></script>
+    <script src="/static/js/delete_marker.js"></script>
 
 </body>
 </html>

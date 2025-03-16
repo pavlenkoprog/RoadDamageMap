@@ -21,50 +21,54 @@ var markers = L.markerClusterGroup({
     }
 });
 
-function loadMarkers() {
-    fetch("/load-markers")
-        .then(response => response.json())
-        .then(data => {
-            markers.clearLayers(); // Очищаем маркеры перед загрузкой новых
 
-            data.photos.forEach(photo => {
-                    var popupContent = `
-                        <img src="${photo.photo}" width="200" /><br>
-                        <button onclick="deletePhoto('${photo._id}')">Удалить</button>
-                        <button onclick="editPhoto('${photo._id}')">Редактировать</button>
-                    `; // Передаем _id
+function DrawHeatMap(markersData) {
+    if (typeof heatLayer !== 'undefined') {
+        map.removeLayer(heatLayer);
+    }
+    var heatData = markersData.map(marker => [marker.lat, marker.lon, 0.5]); // Интенсивность 0.5
 
-                var marker = L.marker([photo.lat, photo.lon], { icon: customIcon });
-                marker.bindPopup(popupContent);
-                markers.addLayer(marker);
-            });
-
-            map.addLayer(markers);
-        })
-        .catch(error => console.error("Ошибка загрузки фото:", error));
-}
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    loadMarkers();
-
-    // Отрисовка тепловой карты
-    var heatData = photoData.map(photo => [photo.lat, photo.lon, 0.5]); //  интенсивность точки
-    var heatLayer = L.heatLayer(heatData, {
-        radius: 100,   // Радиус размытия тепла
-        blur: 40,      // Размытие
-        maxZoom: 17,   // Максимальный зум, при котором виден эффект
-        gradient: {    // Градиент красного цвета
+    heatLayer = L.heatLayer(heatData, {
+        radius: 100,
+        blur: 40,
+        maxZoom: 17,
+        gradient: {
             0.2: 'yellow',
             0.4: 'orange',
             0.6: 'red',
             1.0: 'darkred'
         }
     }).addTo(map);
+}
 
-});
+
+function loadMarkers() {
+    fetch("/get-all-markers")
+        .then(response => response.json())
+        .then(data => {
+            markers.clearLayers(); // Очищаем маркеры перед загрузкой новых
+
+            data.markers_list.forEach(marker => {
+                    var popupContent = `
+                        <img src="${marker.photo}" width="200" /><br>
+                        <button onclick="deleteMarker('${marker._id}')">Удалить</button>
+                        <button onclick="editMarker('${marker._id}')">Редактировать</button>
+                    `; // Передаем _id
+
+                var marker = L.marker([marker.lat, marker.lon], { icon: customIcon });
+                marker.bindPopup(popupContent);
+                markers.addLayer(marker);
+            });
+
+            map.addLayer(markers);
+            DrawHeatMap(data.markers_list);
+        })
+        .catch(error => console.error("Ошибка загрузки фото:", error));
+}
+
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+loadMarkers();

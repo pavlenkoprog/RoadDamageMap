@@ -1,22 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     const editFormContainer = document.getElementById("edit-form-container");
-    const editForm = document.getElementById("edit-point-form");
+    const editForm = document.getElementById("edit-marker-form");
 
     // Функция открытия формы редактирования и заполнения данными
-    window.editPhoto = function (photoId) {
-        fetch(`/get-photo/${photoId}`)
+    window.editMarker = function (markerId) {
+        fetch(`/get-marker/${markerId}`)
             .then(response => response.json())
-            .then(photo => {
-                if (!photo.success) {
-                    alert("Ошибка: " + photo.message);
+            .then(marker => {
+                if (!marker.success) {
+                    alert("Ошибка: " + marker.message);
                     return;
                 }
 
                 // Заполняем поля формы
-                document.getElementById("edit-lat").value = photo.data.lat;
-                document.getElementById("edit-lon").value = photo.data.lon;
-                document.getElementById("edit-timestamp").value = photo.data.timestamp;
-                document.getElementById("edit-id").value = photoId; // Скрытое поле для id
+                document.getElementById("edit-lat").value = marker.data.lat;
+                document.getElementById("edit-lon").value = marker.data.lon;
+                document.getElementById("edit-timestamp").value = marker.data.timestamp;
+                document.getElementById("edit-id").value = markerId; // Скрытое поле для id
 
                 // Открываем форму
                 editFormContainer.style.display = "block";
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let formData = new FormData(editForm);
 
-        fetch('/edit-point', {
+        fetch('/edit-marker', {
             method: 'POST',
             body: formData
         })

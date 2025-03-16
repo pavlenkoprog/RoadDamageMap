@@ -1,10 +1,10 @@
-function deletePhoto(photoId) {
-    fetch("/delete-photo", {
+function deleteMarker(markerId) {
+    fetch("/delete-marker", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: photoId }),  // Отправляем _id вместо photoSrc
+        body: JSON.stringify({ id: markerId }),  // Отправляем _id вместо photoSrc
     })
     .then(response => response.json())
     .then(data => {
