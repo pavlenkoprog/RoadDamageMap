@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const formContainer = document.getElementById("form-container");
+    const formContainer = document.getElementById("add-form-container");
     const form = document.getElementById("add-point-form"); // Получаем форму
     let formOpen = false; // Флаг состояния формы
 
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Кнопка закрытия
     document.getElementById("close-form").addEventListener("click", closeForm);
 
-    // Отправка формы в MongoDB без перезагрузки
     form.addEventListener("submit", function (e) {
         e.preventDefault();  // Останавливаем стандартное поведение формы
 
@@ -38,13 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Добавляем маркер на карту
-                var marker = L.marker([parseFloat(formData.get('lat')), parseFloat(formData.get('lon'))]);
-                marker.bindPopup(`<img src="${data.photo_path}" width="200">`);
-                markers.addLayer(marker);
-
-                alert(data.message);
-                closeForm(); // Закрываем форму после успешной отправки
+                loadMarkers();
+                closeForm();
             } else {
                 alert("Ошибка: " + data.message);
             }
@@ -53,9 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Ошибка при отправке данных:", error);
         });
         closeForm();
-        loadMarkers();
         window.location.href = "/";
-        location.reload();
-        return false; // ВАЖНО! Останавливает дальнейшую обработку формы
+        return false;
     });
 });

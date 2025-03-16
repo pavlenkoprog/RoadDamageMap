@@ -65,32 +65,59 @@
             <div class="col-10 p-0">
                 <div id="map"></div>
 
-                <div id="form-container" class="position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
+                <div id="add-form-container" class="map-form-container position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
                     <h3 class="text-center">Добавить точку</h3>
+
+<!--                    Форма добавления маркера-->
                     <form action="/add-point" method="POST" enctype="multipart/form-data" id="add-point-form">
                         <div class="mb-3">
                             <label for="lat" class="form-label">Широта:</label>
                             <input type="text" id="lat" name="lat" class="form-control" readonly>
                         </div>
-
                         <div class="mb-3">
                             <label for="lon" class="form-label">Долгота:</label>
                             <input type="text" id="lon" name="lon" class="form-control" readonly>
                         </div>
-
                         <div class="mb-3">
                             <label for="timestamp" class="form-label">Время:</label>
                             <input type="text" id="timestamp" name="timestamp" class="form-control" readonly>
                         </div>
-
                         <div class="mb-3">
                             <label for="file" class="form-label">Фото:</label>
                             <input type="file" id="file" name="file" class="form-control" required>
                         </div>
-
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-primary w-50">Добавить</button>
                             <button type="button" id="close-form" class="btn btn-secondary w-50">Закрыть</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="edit-form-container" class="map-form-container position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
+                    <h3 class="text-center">Добавить точку</h3>
+                <!--                    Форма редактирования маркера-->
+                    <form action="/edit-point" method="POST" enctype="multipart/form-data" id="edit-point-form">
+                        <input type="hidden" id="edit-id" name="photo_id" readonly> <!-- ID маркера -->
+
+                        <div class="mb-3">
+                            <label for="edit-lat" class="form-label">Широта:</label>
+                            <input type="text" id="edit-lat" name="lat" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-lon" class="form-label">Долгота:</label>
+                            <input type="text" id="edit-lon" name="lon" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-timestamp" class="form-label">Время:</label>
+                            <input type="text" id="edit-timestamp" name="timestamp" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-file" class="form-label">Новое фото (необязательно):</label>
+                            <input type="file" id="edit-file" name="file" class="form-control" accept="image/*">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success w-50">Сохранить</button>
+                            <button type="button" id="close-edit-form" class="btn btn-secondary w-50">Закрыть</button>
                         </div>
                     </form>
                 </div>
@@ -110,6 +137,7 @@
     </script>
     <script src="/static/js/map.js"></script>
     <script src="/static/js/add_point.js"></script>
+    <script src="/static/js/edit_point.js"></script>
     <script src="/static/js/delete_point.js"></script>
 
 </body>

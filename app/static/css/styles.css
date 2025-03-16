@@ -46,7 +46,7 @@
     height: 50px;
 }
 
-#form-container {
+.map-form-container {
     position: fixed; /* Форма фиксируется и не прокручивается */
     top: 50%; /* Размещаем по центру экрана */
     left: 50%;
