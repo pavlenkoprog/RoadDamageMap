@@ -1,10 +1,16 @@
+import io
+
 from fastapi import FastAPI, Form, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from starlette.responses import StreamingResponse
 from starlette.staticfiles import StaticFiles
 from starlette.requests import Request
-from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
+
+from motor.motor_asyncio import AsyncIOMotorClient
+from gridfs import GridFS
+from pymongo import MongoClient
 
 import os
 import shutil
@@ -21,9 +27,11 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
 # Подключение к MongoDB
-client = AsyncIOMotorClient("mongodb://localhost:27017")
+mongo_adress = "mongodb://localhost:27017"
+client = AsyncIOMotorClient(mongo_adress)
 db = client['RoadDamageDB']
 road_damage_collection = db['RoadDamageCollection']
+fs = GridFS(MongoClient(mongo_adress)["RoadDamageDB"])
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -56,6 +64,17 @@ async def get_marker(marker_id: str):
 
     return {"success": True, "data": marker}
 
+@app.get("/get-photo/{file_id}")
+async def get_photo(file_id: str):
+    try:
+        oid = ObjectId(file_id)
+        grid_out = fs.get(oid)
+        content = grid_out.read()
+        content_type = grid_out.content_type if hasattr(grid_out, "content_type") else "image/jpeg"
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Фото не найдено")
+    return StreamingResponse(io.BytesIO(content), media_type=content_type)
+
 
 @app.post("/add-marker")
 async def add_marker(
@@ -64,17 +83,18 @@ async def add_marker(
     timestamp: str = Form(...),
     file: UploadFile = File(...)
 ):
-    # Генерируем уникальное имя файла
-    file_ext = os.path.splitext(file.filename)[1]  # Расширение файла (.jpg, .png)
+    # Сохранение фото
+    file_data = await file.read()
+    file_ext = os.path.splitext(file.filename)[1]
     safe_filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}{file_ext}"
-    file_path = os.path.join(UPLOAD_DIR, safe_filename)
+    file_id = fs.put(file_data, filename=safe_filename, content_type=file.content_type)
 
     # Добавляем запись в MongoDB
     point = {
         "lat": lat,
         "lon": lon,
         "timestamp": timestamp,
-        "photo": file_path
+        "photo_file_id": str(file_id)
     }
     await road_damage_collection.insert_one(point)
     return {"success": True}
@@ -113,14 +133,12 @@ async def edit_marker(
 
     # Если загружено новое фото — сохраняем
     if file:
+        # Сохранение фото
+        file_data = await file.read()
         file_ext = os.path.splitext(file.filename)[1]
-        new_filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}{file_ext}"
-        file_path = os.path.join(UPLOAD_DIR, new_filename)
-
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
-        update_data["photo"] = file_path
+        safe_filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}{file_ext}"
+        file_id = fs.put(file_data, filename=safe_filename, content_type=file.content_type)
+        update_data["photo_file_id"] = str(file_id)
 
     # Обновляем запись в MongoDB
     result = await road_damage_collection.update_one(

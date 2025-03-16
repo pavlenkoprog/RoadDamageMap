@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Ошибка при отправке данных:", error);
         });
         closeForm();
-        window.location.href = "/";
+//        window.location.href = "/";
         return false;
     });
 });

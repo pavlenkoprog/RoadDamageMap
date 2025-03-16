@@ -50,7 +50,7 @@ function loadMarkers() {
 
             data.markers_list.forEach(marker => {
                     var popupContent = `
-                        <img src="${marker.photo}" width="200" /><br>
+                        <img src="/get-photo/${marker.photo_file_id}" width="200" /><br>
                         <button onclick="deleteMarker('${marker._id}')">Удалить</button>
                         <button onclick="editMarker('${marker._id}')">Редактировать</button>
                     `; // Передаем _id
