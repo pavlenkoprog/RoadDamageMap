@@ -65,9 +65,27 @@
             <div class="col-10 p-0">
                 <div id="map"></div>
 
+                <!-- marker_card.html -->
+                <div id="marker-template" style="display: none;">
+                    <div class="card" style="width: 18rem;">
+                        <img src="" class="card-img-top marker-photo" alt="Фото повреждения">
+                        <div class="card-body">
+                            <h5 class="card-title">Координаты</h5>
+                            <p class="card-text">
+                                <strong>Широта:</strong> <span class="marker-lat"></span><br>
+                                <strong>Долгота:</strong> <span class="marker-lon"></span><br>
+                                <strong>Время:</strong> <span class="marker-timestamp"></span>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="">Удалить</button>
+                                <button class="btn btn-primary btn-sm edit-btn" data-id="">Редактировать</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="add-form-container" class="map-form-container position-fixed top-50 start-50 translate-middle bg-white p-4 shadow rounded" style="display:none; width: 300px;">
                     <h3 class="text-center">Добавить точку</h3>
-
 <!--                    Форма добавления маркера-->
                     <form action="/add-point" method="POST" enctype="multipart/form-data" id="add-marker-form">
                         <div class="mb-3">

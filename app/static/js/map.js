@@ -49,18 +49,44 @@ function loadMarkers() {
             markers.clearLayers(); // Очищаем маркеры перед загрузкой новых
 
             data.markers_list.forEach(marker => {
-                    var popupContent = `
-                        <img src="/get-photo/${marker.photo_file_id}" width="200" /><br>
-                        <button onclick="deleteMarker('${marker._id}')">Удалить</button>
-                        <button onclick="editMarker('${marker._id}')">Редактировать</button>
-                    `; // Передаем _id
+            let template = document.getElementById('marker-template').innerHTML;
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = template;
 
-                var marker = L.marker([marker.lat, marker.lon], { icon: customIcon });
-                marker.bindPopup(popupContent);
-                markers.addLayer(marker);
+            tempDiv.querySelector('.marker-photo').src = `/get-photo/${marker.photo_file_id}`;
+            tempDiv.querySelector('.marker-lat').textContent = marker.lat;
+            tempDiv.querySelector('.marker-lon').textContent = marker.lon;
+            tempDiv.querySelector('.marker-timestamp').textContent = marker.timestamp;
+
+            // Добавляем ID в data атрибуты
+            tempDiv.querySelector('.delete-btn').setAttribute('data-id', marker._id);
+            tempDiv.querySelector('.edit-btn').setAttribute('data-id', marker._id);
+
+            var leafletMarker = L.marker([marker.lat, marker.lon], { icon: customIcon });
+
+            // Bind popup с обработкой событий после открытия
+            leafletMarker.bindPopup(tempDiv.innerHTML);
+
+            leafletMarker.on('popupopen', function (e) {
+                // Назначаем обработчики уже после открытия popup
+                const popup = e.popup.getElement();
+
+                popup.querySelector('.delete-btn').onclick = function () {
+                    const id = this.getAttribute('data-id');
+                    deleteMarker(id);
+                };
+
+                popup.querySelector('.edit-btn').onclick = function () {
+                    const id = this.getAttribute('data-id');
+                    editMarker(id);
+                };
             });
 
+            markers.addLayer(leafletMarker);
+        });
+
             map.addLayer(markers);
+
             DrawHeatMap(data.markers_list);
         })
         .catch(error => console.error("Ошибка загрузки фото:", error));

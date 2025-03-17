@@ -1,5 +1,3 @@
-import io
-
 from fastapi import FastAPI, Form, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -12,6 +10,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from gridfs import GridFS
 from pymongo import MongoClient
 
+import io
 import os
 import shutil
 import datetime
